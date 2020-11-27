@@ -177,6 +177,11 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
 
+        /**
+         * User Role Permission by spatie
+         */
+        Spatie\Permission\PermissionServiceProvider::class,
+
     ],
 
     /*
