@@ -17,9 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('index');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(function(){
 
-    Route::get('/dashboard', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('dashboard');
+    Route::get('/', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('dashboard');
+    Route::get('/members', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('members');
 
 });
 

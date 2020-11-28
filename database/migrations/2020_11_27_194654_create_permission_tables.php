@@ -4,8 +4,35 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\User;
+
 class CreatePermissionTables extends Migration
 {
+   
+    public $roles = ['Admin', 'Field Officer', 'Member'];
+
+    public $permissions = [
+       'View Default Dashboard',
+       'Edit Default Dashboard',
+
+       'View Admin',
+       'Add Admin',
+       'Edit Admin',
+       'Delete Admin',
+
+       'View Field Officer',
+       'Add Field Officer',
+       'Edit Field Officer',
+       'Delete Field Officer',
+
+       'View Member',
+       'Add Member',
+       'Edit Member',
+       'Delete Member'
+    ];
+
     /**
      * Run the migrations.
      *
@@ -86,6 +113,12 @@ class CreatePermissionTables extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+
+
+        $this->insertRoles();
+        $this->insertPermissions();
+        $this->attachPermissionsToRoles();
+        $this->attachAdminRoleToFirstUser();
     }
 
     /**
@@ -107,4 +140,33 @@ class CreatePermissionTables extends Migration
         Schema::drop($tableNames['roles']);
         Schema::drop($tableNames['permissions']);
     }
+
+    function insertRoles(){
+        foreach($this->roles as $role){
+            Role::create(['name' => $role]);
+        }
+    }
+
+    function insertPermissions(){
+        foreach($this->permissions as $permission){
+            Permission::create(['name' => $permission]);
+        }
+    }
+
+    function attachPermissionsToRoles(){
+        
+        // attach all permissions to admin
+        $adminRole = Role::findByName('Admin');
+        $adminRole->syncPermissions($this->permissions);
+
+        // attach member read permission
+        $foRole = Role::findByName('Field Officer');
+        $foRole->givePermissionTo('View Member');
+    }
+
+    function attachAdminRoleToFirstUser(){
+        $firstUser = User::find(1);
+        $firstUser->assignRole('Admin');
+    }
+
 }
