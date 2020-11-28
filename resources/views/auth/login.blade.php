@@ -4,6 +4,11 @@
             <x-jet-authentication-card-logo />
         </x-slot>
 
+        <div class="bg-blue-400 rounded p-2 my-2 shadow">
+            <p>Demo Email: demo@demo.com </p>
+            <p>Password: demo </p>
+        </div>
+
         <x-jet-validation-errors class="mb-4" />
 
         @if (session('status'))

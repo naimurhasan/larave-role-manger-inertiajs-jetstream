@@ -9,6 +9,8 @@ class AdminPanelController extends Controller
 {
     // uri: dashbaord
     public function dashboard() {
+
+        
         return Inertia::render('Dashboard');
     }
 }

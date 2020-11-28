@@ -131,7 +131,8 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Registration Disabled
+        // Features::registration(),
         Features::resetPasswords(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),

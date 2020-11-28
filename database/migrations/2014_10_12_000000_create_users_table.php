@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 class CreateUsersTable extends Migration
 {
@@ -13,6 +14,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        // Create table
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -24,6 +26,14 @@ class CreateUsersTable extends Migration
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();
         });
+
+        // Insert Dummy User
+        User::create([
+            'name' => 'Demo Admin',
+            'email' => 'demo@demo.com',
+            'password' => Hash::make('demo'),
+        ]);
+
     }
 
     /**
