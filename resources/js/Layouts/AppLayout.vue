@@ -19,9 +19,9 @@
                             </jet-nav-link>
                         </div>
 
-                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <jet-nav-link :href="route('members')" :active="route().current('members')">
-                                Member
+                        <div v-for="(key, index) in Object.keys($page['menu'])" v-bind:key="index" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <jet-nav-link :href="route($page['menu'][key])" :active="route().current($page['menu'][key])">
+                                {{key}}
                             </jet-nav-link>
                         </div>
 
@@ -57,9 +57,17 @@
                                         Profile
                                     </jet-dropdown-link>
 
-                                    <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.jetstream.hasApiFeatures">
-                                        API Tokens
-                                    </jet-dropdown-link>
+                                   <div class="border-t border-gray-100"></div>
+                                    
+                                    <div v-if="$page.permissions.includes('Role View')">
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Manage Roles
+                                        </div>
+                                        <jet-dropdown-link :href="route('view_roles')">
+                                                View Roles
+                                        </jet-dropdown-link>
+                                    </div>
+                                   
 
                                     <div class="border-t border-gray-100"></div>
 
@@ -130,6 +138,13 @@
                     </jet-responsive-nav-link>
                 </div>
 
+                <div  v-for="(key, index) in Object.keys($page['menu'])" v-bind:key="index" class="pt-2 pb-3 space-y-1">
+                    <jet-responsive-nav-link :href="route($page['menu'][key])" :active="route().current($page['menu'][key])">
+                        {{key}}
+                    </jet-responsive-nav-link>
+                </div>
+                
+
                 <!-- Responsive Settings Options -->
                 <div class="pt-4 pb-1 border-t border-gray-200">
                     <div class="flex items-center px-4">
@@ -148,6 +163,11 @@
                             Profile
                         </jet-responsive-nav-link>
 
+                        <jet-responsive-nav-link :href="route('view_roles')" :active="route().current('view_roles')" v-if="$page.permissions.includes('Role View')">
+                            View Roles
+                        </jet-responsive-nav-link>
+
+                        
                         <jet-responsive-nav-link :href="route('api-tokens.index')" :active="route().current('api-tokens.index')" v-if="$page.jetstream.hasApiFeatures">
                             API Tokens
                         </jet-responsive-nav-link>
@@ -243,7 +263,7 @@
 
 
         mounted(){
-            console.log(this.$page['menu'])
+          console.log(this.$page['permissions'])
         },
 
         methods: {

@@ -17,14 +17,46 @@ class HandleInertiaRequests
      */
 
     
+    
     public function handle(Request $request, Closure $next)
     {
         
-        Inertia::share('menu', ['Members']);
+        $menu = [];
+        $permissions = [];
+        
+    
+        if(Auth()->user() != null){
+
+            // assign permission list
+            $permissions = $this->permissionNames();
+
+            // assign menu
+            if(\in_array('Dashboard Default View', $permissions)){
+                $menu = array_merge($menu, [
+                    'Members' => 'members',
+                ]);
+            }
+            
+
+        }
+        
+        Inertia::share('menu', $menu);
+        Inertia::share('permissions', $permissions);
+        
+
         
         return $next($request);
     }
 
+    function permissionNames(){
+        $permissions = [];
+
+        foreach(Auth()->user()->getAllPermissions() as $permission){
+            $permissions[] = $permission->name;
+        }
+
+        return $permissions;
+    }
     
 
 }

@@ -13,14 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::GET('/', function () {
     return view('welcome');
 })->name('index');
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(function(){
 
-    Route::get('/', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('dashboard');
-    Route::get('/members', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('members');
+    Route::GET('/', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('dashboard');
+    Route::GET('/members', [\App\Http\Controllers\AdminPanelController::class, 'dashboard'])->name('members');
+
+
+    Route::GET('/view_roles', [\App\Http\Controllers\SuperAdminController::class, 'view_roles'])->name('view_roles');
+    Route::POST('/update_role', [\App\Http\Controllers\SuperAdminController::class, 'update_role'])->name('update_role');
 
 });
 

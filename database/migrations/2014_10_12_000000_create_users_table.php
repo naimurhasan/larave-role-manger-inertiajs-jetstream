@@ -27,13 +27,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        // Insert Dummy User
-        User::create([
-            'name' => 'Demo Admin',
-            'email' => 'demo@demo.com',
-            'password' => Hash::make('demo'),
-        ]);
-
+        
     }
 
     /**

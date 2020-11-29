@@ -11,28 +11,7 @@ use App\Models\User;
 class CreatePermissionTables extends Migration
 {
    
-    public $roles = ['Admin', 'Field Officer', 'Member'];
-
-    public $permissions = [
-       'View Default Dashboard',
-       'Edit Default Dashboard',
-
-       'View Admin',
-       'Add Admin',
-       'Edit Admin',
-       'Delete Admin',
-
-       'View Field Officer',
-       'Add Field Officer',
-       'Edit Field Officer',
-       'Delete Field Officer',
-
-       'View Member',
-       'Add Member',
-       'Edit Member',
-       'Delete Member'
-    ];
-
+    
     /**
      * Run the migrations.
      *
@@ -115,10 +94,7 @@ class CreatePermissionTables extends Migration
             ->forget(config('permission.cache.key'));
 
 
-        $this->insertRoles();
-        $this->insertPermissions();
-        $this->attachPermissionsToRoles();
-        $this->attachAdminRoleToFirstUser();
+        $this->seedRoleAndPermissions();
     }
 
     /**
@@ -141,32 +117,96 @@ class CreatePermissionTables extends Migration
         Schema::drop($tableNames['permissions']);
     }
 
+    public $roles = ['Super Admin', 'Admin', 'Field Agent', 'Member'];
+
+    public $permissions = [
+
+        'Dashboard Default View',
+        'Role View',
+        'Role Create',
+        'Role Edit',
+
+        'Admin Create',
+        
+        'Staff View',
+        'Staff Add',
+        'Staff Edit',
+        'Staff Delete',
+
+        'Member View',
+        'Member Add',
+        'Member Edit',
+        'Member Delete'
+
+    ];
+
+    function seedRoleAndPermissions(){
+        $this->insertRoles();
+        $this->insertPermissions();
+
+        $this->syncSuperAdminPermissions();
+        $this->makeASuperAdmin();
+
+        $this->syncAdminPermissions();
+        $this->makeADemoAdmin();
+
+    }
+
     function insertRoles(){
         foreach($this->roles as $role){
-            Role::create(['name' => $role]);
+            Role::create(['name' => $role, 'guard_name'=> 'sanctum']);
         }
     }
 
     function insertPermissions(){
         foreach($this->permissions as $permission){
-            Permission::create(['name' => $permission]);
+            Permission::create(['name' => $permission, 'guard_name' => 'sanctum']);
         }
     }
 
-    function attachPermissionsToRoles(){
+    function syncSuperAdminPermissions(){
+       $superAdmin = Role::findByName('Super Admin',  $guardName = 'sanctum');
+       $superAdmin->syncPermissions(['Role Create', 'Role Edit', 'Admin Create', 'Role View']);
+    }
+
+    function syncAdminPermissions(){
+        $superAdmin = Role::findByName('Admin', $guardName='sanctum');
+        $superAdmin->syncPermissions([
+            'Dashboard Default View',
+            
+            'Staff View',
+            'Staff Add',
+            'Staff Edit',
+            'Staff Delete',
+
+            'Member View',
+            'Member Add',
+            'Member Edit',
+            'Member Delete'
+        ]);
+     }
+
+    function makeASuperAdmin(){
         
-        // attach all permissions to admin
-        $adminRole = Role::findByName('Admin');
-        $adminRole->syncPermissions($this->permissions);
+        $user = User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@demo.com',
+            'password' => Hash::make('demo'),
+        ]);
 
-        // attach member read permission
-        $foRole = Role::findByName('Field Officer');
-        $foRole->givePermissionTo('View Member');
+        $user->syncRoles(['Super Admin']);
+
+    }
+    
+    function makeADemoAdmin(){
+        $user = User::create([
+            'name' => 'Demo Admin',
+            'email' => 'admin@demo.com',
+            'password' => Hash::make('demo'),
+        ]);
+
+        $user->assignrole('Admin');
     }
 
-    function attachAdminRoleToFirstUser(){
-        $firstUser = User::find(1);
-        $firstUser->assignRole('Admin');
-    }
-
+    
 }
