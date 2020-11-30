@@ -81,6 +81,12 @@
             updateRolesPermission(){
                 console.log(this.rolesWithPermissions[Object.keys(this.rolesWithPermissions)[this.selected_role_index]])
                 
+                let loader = this.$loading.show({
+                  // Optional parameters
+                  container: false,
+                  canCancel: false,
+                });
+
                 axios({
                     // TODO: must make it dynamic
                     url: 'http://somitytracker.test/dashboard/update_role',
@@ -97,10 +103,12 @@
                 }).then((response) => {
 
                     console.log(response)
+                    loader.hide();
 
                 }, (err) => {
 
                     console.log(err)
+                    loader.hide();
 
                 })
 

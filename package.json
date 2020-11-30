@@ -27,6 +27,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "@inertiajs/progress": "^0.1.0"
+        "@inertiajs/progress": "^0.1.0",
+        "vue-loading-overlay": "^3.4.2"
     }
 }
