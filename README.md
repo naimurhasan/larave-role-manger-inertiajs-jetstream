@@ -2,7 +2,7 @@
 
 This is an open source app to manage role and permissions in laravel. Built Over Laravel Inertiajs Jetstream.
 
-![Laravel Inertiajs Jetstream Role Manager](https://github.com/naimurhasan/larave-inertiajs-jetstream-role-manger/blob/master/_screenshot.jpg?raw=true)
+![Laravel Inertiajs Jetstream Role Manager](https://github.com/naimurhasan/larave-role-manger-inertiajs-jetstream/blob/master/_screenshot.jpg?raw=true)
 
 
 ## How to Use
