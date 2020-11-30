@@ -261,11 +261,6 @@
             }
         },
 
-
-        mounted(){
-          console.log(this.$page['permissions'])
-        },
-
         methods: {
             switchToTeam(team) {
                 this.$inertia.put(route('current-team.update'), {

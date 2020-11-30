@@ -125,6 +125,7 @@ class CreatePermissionTables extends Migration
         'Role View',
         'Role Create',
         'Role Edit',
+        'Role Delete',
 
         'Admin Create',
         
@@ -166,7 +167,7 @@ class CreatePermissionTables extends Migration
 
     function syncSuperAdminPermissions(){
        $superAdmin = Role::findByName('Super Admin',  $guardName = 'sanctum');
-       $superAdmin->syncPermissions(['Role Create', 'Role Edit', 'Admin Create', 'Role View']);
+       $superAdmin->syncPermissions(['Role Create', 'Role Edit', 'Admin Create', 'Role View', 'Role Delete']);
     }
 
     function syncAdminPermissions(){

@@ -28,6 +28,8 @@
     },
     "dependencies": {
         "@inertiajs/progress": "^0.1.0",
-        "vue-loading-overlay": "^3.4.2"
+        "vue-loading-overlay": "^3.4.2",
+        "vue-sweetalert2": "^4.1.1",
+        "vue-toast-notification": "^0.6.0"
     }
 }

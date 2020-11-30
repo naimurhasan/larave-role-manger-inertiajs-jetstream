@@ -12,6 +12,12 @@ import { InertiaProgress } from '@inertiajs/progress'
 // overlay loading Component
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+// vue toast
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+// beatuful alert and confirmations
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 // page to page transition
 InertiaProgress.init({
@@ -34,8 +40,8 @@ Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
 Vue.use(Loading);
-
-
+Vue.use(VueToast);
+Vue.use(VueSweetalert2);
 
 
 const app = document.getElementById('app');

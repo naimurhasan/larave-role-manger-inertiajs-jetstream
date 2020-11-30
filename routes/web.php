@@ -25,7 +25,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(func
 
     Route::GET('/view_roles', [\App\Http\Controllers\SuperAdminController::class, 'view_roles'])->name('view_roles');
     Route::POST('/update_role', [\App\Http\Controllers\SuperAdminController::class, 'update_role'])->name('update_role');
-
+    Route::POST('/create_role', [\App\Http\Controllers\SuperAdminController::class, 'create_role'])->name('create_role');
+    Route::DELETE('/delete_role', [\App\Http\Controllers\SuperAdminController::class, 'delete_role'])->name('delete_role');
+    
+    
 });
 
 
