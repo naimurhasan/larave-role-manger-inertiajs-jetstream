@@ -253,7 +253,7 @@
 
                             // delete the role in vue
                             this.$delete(this.rolesWithPermissions, this.rolesKeyFor(this.selected_role_index))
-                            this.selected_role_index = 0;
+                            this.selected_role_index = Object.keys(this.rolesWithPermissions).length - 1;
 
 
                         }, (err) => {

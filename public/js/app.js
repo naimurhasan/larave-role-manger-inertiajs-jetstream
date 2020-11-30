@@ -4638,7 +4638,7 @@ __webpack_require__.r(__webpack_exports__);
 
             _this3.$delete(_this3.rolesWithPermissions, _this3.rolesKeyFor(_this3.selected_role_index));
 
-            _this3.selected_role_index = 0;
+            _this3.selected_role_index = Object.keys(_this3.rolesWithPermissions).length - 1;
           }, function (err) {
             console.log('Error: [ViewRole/NewRole/Axios]');
             loader.hide();
