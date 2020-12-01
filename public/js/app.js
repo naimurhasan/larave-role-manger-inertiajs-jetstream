@@ -4376,12 +4376,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['selected_index', 'rolesWithPermissions'],
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    console.log(this.group_names);
+    console.log(this.rolesWithPermissions);
+  },
   methods: {
     changedInputCheckbox: function changedInputCheckbox(event, permission_name) {
       this.$emit('set-permission-for-role', permission_name, event.target.checked);
+    }
+  },
+  computed: {
+    group_names: function group_names() {
+      var nameList = [];
+      var permissionsNameForCurrentRole = this.rolesWithPermissions[Object.keys(this.rolesWithPermissions)[this.selected_index]];
+      Object.keys(permissionsNameForCurrentRole).forEach(function (permission) {
+        var group_name = permissionsNameForCurrentRole[permission]['group_by'];
+
+        if (!nameList.includes(group_name)) {
+          nameList.push(group_name);
+        }
+      });
+      var general_str = 'General';
+      var role_str = 'Role';
+      nameList.sort();
+      nameList.splice(nameList.indexOf(role_str), 1);
+      nameList.unshift(role_str);
+
+      if (nameList.includes(general_str)) {
+        nameList.splice(nameList.indexOf(general_str), 1);
+        nameList.unshift(general_str);
+      }
+
+      return nameList;
     }
   }
 });
@@ -57496,34 +57532,62 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(
-      _vm.rolesWithPermissions[
-        Object.keys(_vm.rolesWithPermissions)[_vm.selected_index]
-      ],
-      function(permission_boolean, permission_name, index) {
-        return _c("div", { attrs: { Key: index } }, [
-          _c("label", { attrs: { vclass: "inline-flex items-center mt-3" } }, [
-            _c("input", {
-              staticClass: "form-checkbox h-5 w-5 text-green-600",
-              attrs: { type: "checkbox" },
-              domProps: { checked: permission_boolean },
-              on: {
-                change: function($event) {
-                  return _vm.changedInputCheckbox($event, permission_name)
-                }
-              }
-            }),
-            _c("span", { staticClass: "ml-2 text-gray-700" }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(permission_name) +
-                  "\n            "
-              )
-            ])
-          ])
-        ])
-      }
-    ),
+    _vm._l(_vm.group_names, function(group_name, index) {
+      return _c("div", { key: index, staticClass: "pb-5" }, [
+        _c("h2", [_vm._v(_vm._s(group_name))]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "pl-10" },
+          _vm._l(
+            Object.keys(
+              _vm.rolesWithPermissions[
+                Object.keys(_vm.rolesWithPermissions)[_vm.selected_index]
+              ]
+            ),
+            function(key_name, index) {
+              return _c("div", { key: index }, [
+                _vm.rolesWithPermissions[
+                  Object.keys(_vm.rolesWithPermissions)[_vm.selected_index]
+                ][key_name]["group_by"] == group_name
+                  ? _c("div", [
+                      _c("input", {
+                        staticClass: "form-checkbox h-5 w-5 text-green-600",
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked:
+                            _vm.rolesWithPermissions[
+                              Object.keys(_vm.rolesWithPermissions)[
+                                _vm.selected_index
+                              ]
+                            ][key_name]["value"]
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.changedInputCheckbox($event, key_name)
+                          }
+                        }
+                      }),
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(
+                            _vm.rolesWithPermissions[
+                              Object.keys(_vm.rolesWithPermissions)[
+                                _vm.selected_index
+                              ]
+                            ][key_name]["type"]
+                          ) +
+                          "\n                "
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            }
+          ),
+          0
+        )
+      ])
+    }),
     0
   )
 }

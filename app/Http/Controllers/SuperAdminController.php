@@ -30,7 +30,7 @@ class SuperAdminController extends Controller
             // and assign boolen if exist in role
 
             foreach($permissions as $permission){
-                $rolesWithPermissions[$role->name][$permission->name] = in_array($permission->name, $role->getPermissionNames()->toArray()); 
+                $rolesWithPermissions[$role->name][$permission->name] = $this->add_group_by($permission->name, in_array($permission->name, $role->getPermissionNames()->toArray()));
             }
 
         }
@@ -158,7 +158,40 @@ class SuperAdminController extends Controller
 
         return PrettyResponse::raw(['statusText' => 'OK'], 200);
         
+
+
     }
+
+    function add_group_by($permission_name, $value){
+
+    $pattern = "/.* (View|Edit|Create|Delete)$/";
+
+    // if permission name ends with Create | Edit | View | Delete
+    if(preg_match($pattern, $permission_name, $match, PREG_OFFSET_CAPTURE))
+    {
+        // slice in two parts first without (slice:1) CreateEVD second (slice:2) C|E|V|D
+        $type = $match[1][0];
+        $group_by = str_split($permission_name, $match[1][1]-1)[0];
+
+        // append in grouped_permisions
+        return [
+            'type' => $type,
+            'group_by' => $group_by,
+            'value' => $value,
+        ];
+
+    }
+    // else assign as group by 'Has No group'
+    else
+    {
+        return [
+            'type' => $permission_name,
+            'group_by' => 'General',
+            'value' => $value,
+        ];
+    }
+    
+}
 
     
 }

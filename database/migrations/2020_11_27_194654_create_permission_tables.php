@@ -119,9 +119,11 @@ class CreatePermissionTables extends Migration
 
     public $roles = ['Super Admin', 'Admin', 'Field Agent', 'Member'];
 
+    // Please vaoid naming General Create | Edit | View | Delete
     public $permissions = [
 
-        'Dashboard Default View',
+        'View Dashboard Default',
+        
         'Role View',
         'Role Create',
         'Role Edit',
@@ -130,12 +132,12 @@ class CreatePermissionTables extends Migration
         'Admin Create',
         
         'Staff View',
-        'Staff Add',
+        'Staff Create',
         'Staff Edit',
         'Staff Delete',
 
         'Member View',
-        'Member Add',
+        'Member Create',
         'Member Edit',
         'Member Delete'
 
@@ -173,15 +175,15 @@ class CreatePermissionTables extends Migration
     function syncAdminPermissions(){
         $superAdmin = Role::findByName('Admin', $guardName='sanctum');
         $superAdmin->syncPermissions([
-            'Dashboard Default View',
+            'View Dashboard Default',
             
             'Staff View',
-            'Staff Add',
+            'Staff Create',
             'Staff Edit',
             'Staff Delete',
 
             'Member View',
-            'Member Add',
+            'Member Create',
             'Member Edit',
             'Member Delete'
         ]);

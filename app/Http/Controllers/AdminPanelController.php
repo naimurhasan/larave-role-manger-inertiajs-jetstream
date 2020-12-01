@@ -16,7 +16,7 @@ class AdminPanelController extends Controller
 
         
 
-        if(Auth()->user()->can('Dashboard Default View'))
+        if(Auth()->user()->can('View Dashboard Default'))
         {
 
             return Inertia::render('Dashboard',);

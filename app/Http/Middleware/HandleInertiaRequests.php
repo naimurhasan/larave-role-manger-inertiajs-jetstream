@@ -31,7 +31,7 @@ class HandleInertiaRequests
             $permissions = $this->permissionNames();
 
             // assign menu
-            if(\in_array('Dashboard Default View', $permissions)){
+            if(\in_array('View Dashboard Default', $permissions)){
                 $menu = array_merge($menu, [
                     'Members' => 'members',
                 ]);
